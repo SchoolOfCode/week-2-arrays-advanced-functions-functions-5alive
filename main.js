@@ -113,12 +113,12 @@
 //   });
 // }
 
-// let sold = [1, 2, 3, 4, 5];
+let sold = [1, 2, 3, 4, 5];
 
-// let totalSold = sold.reduce(function (accumulator, current) {
-//   return (accumulator += current);
-// }, 0);
-// let profitAfterVat = totalSold * 0.8;
+let totalSold = sold.reduce(function (accumulator, current) {
+  return (accumulator += current);
+}, 0);
+let profitAfterVat = totalSold * 0.8;
 
 // console.log(profitAfterVat);
 
@@ -207,7 +207,96 @@ function viewAddressBook() {
 }
 
 function updateUser(addressBook, name, newInfo) {
-  const user = addressBook.find(function (user) {
-    return user.name === user;
-  });
+  const user = addressBook.find(
+    (user) => user.name.toLowerCase() === name.toLowerCase()
+  );
+  if (user) {
+    Object.assign(user, newInfo);
+    return `User ${name} updates successfully.`;
+  } else {
+    return `User ${name} not found`;
+  }
 }
+
+function changeUserInfo() {
+  let currentName = prompt(
+    `Please input the name of the user who's information you wish to change`
+  );
+  let dataType = prompt(
+    `Please enter the type of data you wish to change. Either name, age or city.`
+  );
+  let newInfo = prompt(
+    `Please input the new ${dataType} the user infomation should be updated to`
+  );
+  let updatedUser = updateUser(addressBook, currentName.toLowerCase(), {
+    [dataType]: newInfo,
+  });
+
+  return updatedUser;
+}
+
+function deleteUserInner(addressBook, userName) {
+  const userIndex = addressBook.findIndex(
+    (user) => user.name.toLowerCase() === userName.toLowerCase()
+  );
+  if (userIndex !== -1) {
+    addressBook.splice(userIndex, 1);
+    return `${userName} has been deleted`;
+  } else {
+    return `${userName} not found`;
+  }
+}
+
+function deleteUser(name) {
+  return deleteUserInner(addressBook, name.toLowerCase());
+}
+
+function findUserByCity(addressBook, city) {
+  const matchingUsers = addressBook.filter(
+    (users) => users.city.toLowerCase() === city.toLowerCase()
+  );
+  if (matchingUsers.length > 0) {
+    return matchingUsers;
+  } else {
+    return `No contacts were found in ${city}`;
+  }
+}
+
+function listContactbyCity(citySearch) {
+  return findUserByCity(addressBook, citySearch);
+}
+
+//create a function that accepts paramaters of address book and user name
+//finds the user within the address book
+//deletes the user
+
+// function changeUserName() {
+//   let currentName = prompt(
+//     "Please input the name of the user information you would like to change"
+//   );
+//   let nameChange = prompt("Please input the updated name change");
+//   let updatedUser = updateUser(addressBook, currentName, { name: nameChange });
+//   return updatedUser;
+// }
+
+// function changeUserAge() {
+//   let currentName = prompt(
+//     "Please input the name of the user who's information you would like to change"
+//   );
+//   let ageChange = prompt("Please input the updated age of the user");
+//   let updatedUserAge = updateUser(addressBook, currentName, { age: ageChange });
+//   console.log(
+//     `You have succesfully updated ${currentName}'s age to ${ageChange}`
+//   );
+//   return updatedUserAge;
+// }
+
+// function changeUserCity() {
+//   let currentName = prompt(
+//     "Please input the name of the user who's information you would like to change"
+//   );
+//   let cityChange = prompt(
+//     "Please input the name of the new City you would like to update your user to"
+//   );
+//   return updateUser(addressBook, currentName, { city: cityChange });
+// }
